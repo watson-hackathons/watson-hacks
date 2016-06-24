@@ -12,19 +12,29 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
--->  
+-->
 
 {% extends "ideas/base.html" %}
 
 {% block title_html %}
-  Hackathon Team Idea Update 
+  Hackathon Team Idea Update
 {% endblock %}
 
 
 {% block core_body %}
   <p>Update idea</p>
+    <div>
+      {% if submissions %}
+        <u>Submissions</u>
+        <ul class="list-unstyled">
+          {% for s in submissions %}
+            <li><a href="{{ s.url }}">{{ s.url }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
     <form method="post" action="" >
-        {% csrf_token %} 
+        {% csrf_token %}
         <!-- This line inserts a CSRF token. -->
         <table>
             {{ form.as_table }}

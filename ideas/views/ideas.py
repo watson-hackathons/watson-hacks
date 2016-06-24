@@ -137,11 +137,17 @@ class TeamIdeaUpdateForm(forms.ModelForm):
 
     return super(TeamIdeaUpdateForm, self).clean()
 
-
 class TeamIdeaUpdateView(generic.UpdateView):
   template_name = 'ideas/editteamidea.html'
   model = TeamIdea
   form_class = TeamIdeaUpdateForm
+
+  def get_context_data(self, **kwargs):
+    context = super(TeamIdeaUpdateView, self).get_context_data(**kwargs)
+    t = self.object.team
+    s = TeamSubmission.objects.filter(team = t)
+    context['submissions'] = s
+    return context
 
 
 class TeamSubsListView(generic.ListView):
