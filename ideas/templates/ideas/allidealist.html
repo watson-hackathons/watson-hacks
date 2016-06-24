@@ -12,12 +12,12 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
--->  
+-->
 
 {% extends "ideas/base.html" %}
 
 {% block title_html %}
-  Hackathon Ideas 
+  Hackathon Ideas
 {% endblock %}
 
 
@@ -28,13 +28,28 @@
     {% for idea in teamidealist %}
 
         <tr>
-          <td>{{ idea.team.hackathon.event }}</td> 
-          <td><a href="{% url 'hackideas:editteamidea' idea.id %}">{{ idea.team }}</a></td> 
+          <td>{{ idea.team.hackathon.event }}</td>
+          <td><a href="{% url 'hackideas:editteamidea' idea.id %}">{{ idea.team }}</a></td>
           <td>{{ idea.idea }}</td>
-        </tr>  
+        </tr>
 
     {% endfor %}
     </table>
+
+    {% if is_paginated %}
+      <ul class="pagination">
+        {% for i in page_obj.paginator.page_range %}
+          {% if i == page_obj.number %}
+            <li class="active">
+          {% else %}
+            <li>
+          {% endif %}
+            <a href="{% url 'hackideas:allidealist' %}?page={{ i }}"> {{ i }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
   {% else %}
     <p>No registered Team Ideas.</p>
   {% endif %}

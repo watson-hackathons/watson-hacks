@@ -33,11 +33,11 @@ class TeamListView(generic.ListView):
   context_object_name = 'teamlist'
 
 
-class TeamForm(forms.ModelForm): 
-  hackathon = forms.ModelChoiceField(queryset=Hackathon.objects.filter(active=True)) 
+class TeamForm(forms.ModelForm):
+  hackathon = forms.ModelChoiceField(queryset=Hackathon.objects.filter(active=True))
   class Meta:
     model = Team
-    fields = ['hackathon', 'name']  
+    fields = ['hackathon', 'name']
 
 
 class TeamCreateView(generic.CreateView):
@@ -52,10 +52,10 @@ class TeamMemberListView(generic.ListView):
   context_object_name = 'teammemberlist'
 
   def get_queryset(self):
-    return TeamMember.objects.order_by('team')  
+    return TeamMember.objects.order_by('team')
 
-class TeamMemberForm(forms.ModelForm): 
-  team = forms.ModelChoiceField(queryset=Team.objects.filter(hackathon__active=True)) 
+class TeamMemberForm(forms.ModelForm):
+  team = forms.ModelChoiceField(queryset=Team.objects.filter(hackathon__active=True))
   class Meta:
     model = TeamMember
     fields = ['team', 'twitterID', 'emailID']
@@ -71,18 +71,19 @@ class TeamIdeaListView(generic.ListView):
   context_object_name = 'teamidealist'
 
   def get_queryset(self):
-    return TeamIdea.objects.order_by('team__name')  
+    return TeamIdea.objects.order_by('team__name')
 
 class AllIdeasListView(generic.ListView):
   template_name = 'ideas/allidealist.html'
   model = TeamIdea
   context_object_name = 'teamidealist'
+  paginate_by = 10
 
   def get_queryset(self):
-    return TeamIdea.objects.order_by('team__hackathon__event','team__name')  
+    return TeamIdea.objects.order_by('team__hackathon__event','team__name')
 
-class TeamIdeaForm(forms.ModelForm): 
-  team = forms.ModelChoiceField(queryset=Team.objects.filter(hackathon__active=True)) 
+class TeamIdeaForm(forms.ModelForm):
+  team = forms.ModelChoiceField(queryset=Team.objects.filter(hackathon__active=True))
   class Meta:
     model = TeamIdea
     fields = ['team', 'idea',  'flow', 'data', \
@@ -97,7 +98,7 @@ class TeamIdeaForm(forms.ModelForm):
     ts = self.cleaned_data["team"];
     t = Team.objects.filter(name=ts)[:1].get()
     activeEvent = t.hackathon.active
-    
+
     if not activeEvent:
       msg = "The {0} hackathon at {1} has been archived, and no registrations are allowed".format(
                                                                                         t.hackathon.event,
@@ -112,7 +113,7 @@ class TeamIdeaCreateView(generic.CreateView):
   form_class = TeamIdeaForm
 
 
-class TeamIdeaUpdateForm(forms.ModelForm): 
+class TeamIdeaUpdateForm(forms.ModelForm):
   class Meta:
     model = TeamIdea
     fields = ['team', 'idea',  'flow', 'data', \
@@ -127,7 +128,7 @@ class TeamIdeaUpdateForm(forms.ModelForm):
     ts = self.cleaned_data["team"];
     t = Team.objects.filter(name=ts)[:1].get()
     activeEvent = t.hackathon.active
-    
+
     if not activeEvent:
       msg = "The {0} hackathon at {1} has been archived, and no updates are allowed".format(
                                                                                         t.hackathon.event,
@@ -149,13 +150,13 @@ class TeamSubsListView(generic.ListView):
   context_object_name = 'teamsubmissionlist'
 
   def get_queryset(self):
-    return TeamSubmission.objects.order_by('team__name') 
+    return TeamSubmission.objects.order_by('team__name')
 
-class TeamSubsForm(forms.ModelForm): 
-  team = forms.ModelChoiceField(queryset=Team.objects.filter(hackathon__active=True)) 
+class TeamSubsForm(forms.ModelForm):
+  team = forms.ModelChoiceField(queryset=Team.objects.filter(hackathon__active=True))
   class Meta:
     model = TeamSubmission
-    fields = ['team', 'url', 'gallery'] 
+    fields = ['team', 'url', 'gallery']
 
 
 class TeamSubsCreateView(generic.CreateView):
@@ -166,5 +167,4 @@ class TeamSubsCreateView(generic.CreateView):
 class TeamSubmissionUpdateView(generic.UpdateView):
   template_name = 'ideas/editteamsubmission.html'
   model = TeamSubmission
-  fields = ['team', 'url', 'gallery']     
-  
+  fields = ['team', 'url', 'gallery']
