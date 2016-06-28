@@ -45,7 +45,9 @@
             <li><a href="{% url 'hackideas:teamidealist'%}">Ideas</a></li>
             <li><a href="{% url 'hackideas:teamsubmissionlist'%}">Submissions</a></li>
             {% if user.is_authenticated %}
-              <li><a href="{% url 'hackideas:judgelogout'%}">Log Out</a></li> 	
+              <li><a href="{% url 'hackideas:judgelogout'%}">Log Out</a></li>
+            {% else %}
+              <li><a href="{% url 'hackideas:judge'%}">Judges</a></li> 	
             {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
