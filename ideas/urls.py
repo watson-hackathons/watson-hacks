@@ -28,7 +28,8 @@ from .models import Team
 
 urlpatterns = [
 #    url(r'^teams$', ideas.teamlist, name='teamlist'),
-    url(r'^judge$', judge.judgelogin, name='judge'),
+    url(r'^judge$', judge.judge, name='judge'),
+    url(r'^judgelogin$', judge.judgelogin, name='judgelogin'),
     url(r'^judgelogout$', judge.judgelogout, name='judgelogout'),
     url(r'^teams$', TeamListView.as_view(), name='teamlist'),
     url (r'^create_team$', TeamCreateView.as_view(success_url = 'teams'), \

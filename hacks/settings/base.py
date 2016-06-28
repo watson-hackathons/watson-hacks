@@ -42,6 +42,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Application login page
+LOGIN_URL = 'hackideas:judgelogin'
 
 # Application definition
 

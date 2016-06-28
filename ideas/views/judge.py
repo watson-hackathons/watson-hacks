@@ -16,6 +16,7 @@
 from django import forms
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 class FormLogin(forms.Form):
   username = forms.CharField(label = 'ID')
@@ -38,6 +39,8 @@ def judgelogin(request):
       user = authenticate(username=username, password=password)
       if user:
         login(request, user)
+        if request.GET.get('next') is not None:
+          return redirect(request.GET['next'])
   else:
     form = FormLogin()
   return render(request, 'judges/login.html', {'form': form})
@@ -45,3 +48,7 @@ def judgelogin(request):
 def judgelogout(request):
   logout(request)
   return redirect('hackideas:judge')
+
+@login_required
+def judge(request):
+  return render(request, 'judges/judge.html')

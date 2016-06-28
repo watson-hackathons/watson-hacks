@@ -17,21 +17,14 @@
 {% extends "ideas/base.html" %}
 
 {% block title_html %}
-  Authenticate for Hackathon Judging
+  Hackathon Judging
 {% endblock %}
 
 
 {% block core_body %}
   {% if user.is_authenticated %}
-    <div>Already authenticated.</div>
+    <div>Authenticated - The judging templates will go here.</div>
   {% else %}
-    <div>Enter the judge ID / Key that you have been allocated.</div>
-    <form method="post" action="">
-      {% csrf_token %}
-      <table>
-        {{ form.as_table }}
-      </table>
-      <input type="submit" value="Authenticate" />
-    </form>
+    <div>Not authenticated - you should have been redirected to a login page.</div>
   {% endif %}
 {% endblock %}
