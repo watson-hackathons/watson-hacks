@@ -21,39 +21,42 @@ from .views.ideas import TeamMemberListView, TeamMemberCreateView
 from .views.ideas import TeamIdeaListView, TeamIdeaCreateView, TeamIdeaUpdateView
 from .views.ideas import TeamSubsListView, TeamSubsCreateView, TeamSubmissionUpdateView
 from .views.ideas import AllIdeasListView
+from .views import judge
 
 from .models import Team
 
 
 urlpatterns = [
-#    url(r'^teams$', ideas.teamlist, name='teamlist'),     
-    url(r'^teams$', TeamListView.as_view(), name='teamlist'), 
+#    url(r'^teams$', ideas.teamlist, name='teamlist'),
+    url(r'^judge$', judge.judgelogin, name='judge'),
+    url(r'^judgelogout$', judge.judgelogout, name='judgelogout'),
+    url(r'^teams$', TeamListView.as_view(), name='teamlist'),
     url (r'^create_team$', TeamCreateView.as_view(success_url = 'teams'), \
-                           name="registerteam"), 
+                           name="registerteam"),
 
-    url(r'^teammembers$', TeamMemberListView.as_view(), name='teammemberlist'),     
+    url(r'^teammembers$', TeamMemberListView.as_view(), name='teammemberlist'),
     url (r'^create_teammember$', TeamMemberCreateView.as_view(success_url = 'teammembers'), \
                            name="registerteammember"),
 
-    url(r'^teamideas$', TeamIdeaListView.as_view(), name='teamidealist'),  
-    url(r'^tutti$', AllIdeasListView.as_view(), name='allidealist'), 
+    url(r'^teamideas$', TeamIdeaListView.as_view(), name='teamidealist'),
+    url(r'^tutti$', AllIdeasListView.as_view(), name='allidealist'),
 
     url (r'^create_teamidea$', TeamIdeaCreateView.as_view(success_url = 'teamideas'), \
-                           name="registerteamidea"), 
+                           name="registerteamidea"),
 
 
 	  url (r'^editteamidea_(?P<pk>\d+)$', \
 		         TeamIdeaUpdateView.as_view(success_url="teamideas"), \
 		         name="editteamidea"),
 
-    url(r'^teamsubmissions$', TeamSubsListView.as_view(), name='teamsubmissionlist'),         
+    url(r'^teamsubmissions$', TeamSubsListView.as_view(), name='teamsubmissionlist'),
 
     url (r'^create_teamsubmission$', TeamSubsCreateView.as_view(success_url = 'teamsubmissions'), \
-                           name="registerteamsubmission"), 
+                           name="registerteamsubmission"),
 
 
     url (r'^editteamsubmission_(?P<pk>\d+)$', \
              TeamSubmissionUpdateView.as_view(success_url="teamsubmissions"), \
-             name="editteamsubmission"),    
+             name="editteamsubmission"),
 
 ]
