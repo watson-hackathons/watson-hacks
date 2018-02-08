@@ -19,7 +19,7 @@ from django.http import HttpResponse
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
-from films.models import Genres, Films, Survey
+from films.models import Genres, Films, Survey, Personality
 
 import json
 
@@ -64,6 +64,35 @@ class FormAPI(forms.Form):
   stability = forms.DecimalField(required=False)
   structure = forms.DecimalField(required=False)
 
+def runQuery(field, value):
+  replyArray = []
+
+  filtrationGTE = field + '__gte'
+  filtrationLTE = field + '__lte'
+
+  pHigh = Personality.objects.filter(**{ filtrationGTE: value }).order_by(field).first()
+  if pHigh is not None:
+    rowHigh = {}
+    rowHigh['film'] = pHigh.film.title
+    rowHigh['score'] = str(getattr(pHigh, field, 0))
+    replyArray.append(rowHigh)
+
+  pLow = Personality.objects.filter(**{ filtrationLTE: value }).order_by(field).last()
+  if pLow is not None:
+    rowLow = {}
+    rowLow['film'] = pLow.film.title
+    rowLow['score'] = str(getattr(pLow, field, 0))
+    replyArray.append(rowLow)
+
+  return replyArray
+
+def prepareQuery(queryData):
+  data = {}
+  for q in queryData:
+    data[q] = runQuery(q, queryData[q])
+  reply = {"data": data}
+  return reply
+
 
 @csrf_exempt
 def filmfor(request):
@@ -79,6 +108,7 @@ def filmfor(request):
 
   if request.method == "POST":
     logger.info("Request is a POST")
+    queryFor = {}
     form = FormAPI(request.POST)
     if form.is_valid():
       for d in ['openness', 'consientiousness', 'extraversion',
@@ -87,15 +117,12 @@ def filmfor(request):
         'love', 'practicality', 'expression', 'stability',
         'structure']:
         v = form.cleaned_data[d]
-        print('Got value for {0} of {1} '.format(d, v))
-      #data = form.cleaned_data['openness']
-      #print('value for openness ', data)
+        if v is not None:
+          queryFor[d] = v
+      theData = prepareQuery(queryFor)
       validRequest = True
     else:
       logger.info("The form is not valid")
-
-  if validRequest:
-    theData = {"data":"coming soon"}
 
   results["results"] = theData
   return HttpResponse(json.dumps(results), content_type="application/json")
