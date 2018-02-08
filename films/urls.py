@@ -16,7 +16,7 @@
 from django.conf.urls import url, include
 from django.views.generic.edit import CreateView
 from .views import films
-from .views.films import SurveyCreateView, SurveyThanksCreateView
+from .views.films import SurveyCreateView, SurveyThanksCreateView, filmfor
 
 from .models import Survey
 
@@ -27,4 +27,5 @@ urlpatterns = [
                            name="submitsurvey"),
     url (r'^survey$', SurveyThanksCreateView.as_view(success_url = 'survey'), \
                                name="thanks"),
+    url(r'^filmfor$', filmfor, name='apifilmfor'),
 ]

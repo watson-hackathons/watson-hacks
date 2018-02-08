@@ -43,3 +43,59 @@ class SurveyThanksCreateView(generic.CreateView):
   template_name = 'films/thanks.html'
   model = Survey
   form_class = SurveyForm
+
+
+class FormAPI(forms.Form):
+  openness = forms.DecimalField(required=False)
+  consientiousness = forms.DecimalField(required=False)
+  extraversion = forms.DecimalField(required=False)
+  agreeableness = forms.DecimalField(required=False)
+  emotionalrange = forms.DecimalField(required=False)
+  challenge = forms.DecimalField(required=False)
+  closeness = forms.DecimalField(required=False)
+  curiosity = forms.DecimalField(required=False)
+  excitement = forms.DecimalField(required=False)
+  harmony = forms.DecimalField(required=False)
+  ideal = forms.DecimalField(required=False)
+  liberty = forms.DecimalField(required=False)
+  love = forms.DecimalField(required=False)
+  practicality = forms.DecimalField(required=False)
+  expression = forms.DecimalField(required=False)
+  stability = forms.DecimalField(required=False)
+  structure = forms.DecimalField(required=False)
+
+
+@csrf_exempt
+def filmfor(request):
+  results = {}
+  theData = {"error":"If you see this message then something has gone badly wrong"}
+
+  validRequest = False
+  logger.info("Checking request method")
+  if request.method == "GET":
+    logger.info("Request is a GET")
+    theData = {"error":"Only POST is supported for this API"}
+    validRequest = False
+
+  if request.method == "POST":
+    logger.info("Request is a POST")
+    form = FormAPI(request.POST)
+    if form.is_valid():
+      for d in ['openness', 'consientiousness', 'extraversion',
+        'agreeableness', 'emotionalrange', 'challenge', 'closeness',
+        'curiosity', 'excitement', 'harmony', 'ideal', 'liberty',
+        'love', 'practicality', 'expression', 'stability',
+        'structure']:
+        v = form.cleaned_data[d]
+        print('Got value for {0} of {1} '.format(d, v))
+      #data = form.cleaned_data['openness']
+      #print('value for openness ', data)
+      validRequest = True
+    else:
+      logger.info("The form is not valid")
+
+  if validRequest:
+    theData = {"data":"coming soon"}
+
+  results["results"] = theData
+  return HttpResponse(json.dumps(results), content_type="application/json")
