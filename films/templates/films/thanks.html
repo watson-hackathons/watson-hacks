@@ -1,0 +1,36 @@
+<!--
+   Copyright 2016 IBM Corp. All Rights Reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+{% extends "films/base.html" %}
+
+{% block title_html %}
+  Film Survey
+{% endblock %}
+
+
+{% block core_body %}
+  <div>Thank you for your submission, your help is most appreciated.</div>
+  <p>What is your favourite film out of this list?</p>
+    <form method="post" action="" >
+        {% csrf_token %}
+        <!-- This line inserts a CSRF token. -->
+        <table>
+            {{ form.as_table }}
+            <!-- This line displays lines of the form. -->
+        </table>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+{% endblock %}

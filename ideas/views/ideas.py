@@ -87,12 +87,12 @@ class TeamIdeaForm(forms.ModelForm):
   class Meta:
     model = TeamIdea
     fields = ['team', 'idea',  'flow', 'data', \
-            'alchemyLanguage', 'conceptExpansion', 'conceptInsights', \
-            'dialog', 'documentConversion', 'languageTranslation', \
+            'nlu',  \
+            'conversation', 'languageTranslation', \
             'naturalLanguageClassifier', 'personalityInsights', \
-            'relationshipExtraction', 'rankRetrieve', 'toneAnalyser', \
-            'speechText', 'textSpeech', 'alchemyVision' , 'visualInsights', \
-            'visualRecognition', 'alchemyNews', 'tradeoffAnalytics' ]
+            'toneAnalyser', \
+            'speechText', 'textSpeech',  \
+            'visualRecognition', 'discovery' ]
 
   def clean(self):
     ts = self.cleaned_data["team"];
@@ -117,12 +117,12 @@ class TeamIdeaUpdateForm(forms.ModelForm):
   class Meta:
     model = TeamIdea
     fields = ['team', 'idea',  'flow', 'data', \
-            'alchemyLanguage', 'conceptExpansion', 'conceptInsights', \
-            'dialog', 'documentConversion', 'languageTranslation', \
+            'nlu',  \
+            'conversation', 'languageTranslation', \
             'naturalLanguageClassifier', 'personalityInsights', \
-            'relationshipExtraction', 'rankRetrieve', 'toneAnalyser', \
-            'speechText', 'textSpeech', 'alchemyVision' , 'visualInsights', \
-            'visualRecognition', 'alchemyNews', 'tradeoffAnalytics' ]
+            'toneAnalyser', \
+            'speechText', 'textSpeech',  \
+            'visualRecognition', 'discovery' ]
 
   def clean(self):
     ts = self.cleaned_data["team"];

@@ -32,9 +32,11 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from ideas.views import rootindex
 import ideas
+import films
 
 urlpatterns = [
-    url(r'^$', rootindex.page, name='rootindex'), 
-    url(r'^ideas/', include('ideas.urls', namespace='hackideas')), 
-    url(r'^hacksadmin/', admin.site.urls),    
+    url(r'^$', rootindex.page, name='rootindex'),
+    url(r'^ideas/', include('ideas.urls', namespace='hackideas')),
+    url(r'^films/', include('films.urls', namespace='films')),     
+    url(r'^hacksadmin/', admin.site.urls),
 ]

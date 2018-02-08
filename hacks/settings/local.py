@@ -29,7 +29,21 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME' : 'ibmx_77818476d3b7f6c',
+        'USER' : 'bc1387eee66200',
+        'PASSWORD': 'c8692677',
+        'HOST' : 'eu-cdbr-sl-lhr-01.cleardb.net',
+        'PORT' : '3306',
     }
 }
 
+#"credentials": {
+#                "jdbcUrl": "jdbc:mysql://eu-cdbr-sl-lhr-01.cleardb.net/ibmx_77818476d3b7f6c?user=bc1387eee66200&password=c8692677",
+#                "uri": "mysql://bc1387eee66200:c8692677@eu-cdbr-sl-lhr-01.cleardb.net:3306/ibmx_77818476d3b7f6c?reconnect=true",
+#                "name": "ibmx_77818476d3b7f6c",
+#                "hostname": "eu-cdbr-sl-lhr-01.cleardb.net",
+#                "port": "3306",
+#                "username": "bc1387eee66200",
+#                "password": "c8692677"
+#            },

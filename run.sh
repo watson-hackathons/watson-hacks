@@ -22,11 +22,11 @@ else SERVER_PORT="$VCAP_APP_PORT";
 fi
 echo port is $SERVER_PORT
 echo Performing database initialisations and migrations
-python manage.py makemigrations --settings=hacks.settings.bluemix
-python manage.py migrate --settings=hacks.settings.bluemix
-python manage.py shell --settings=hacks.settings.bluemix < initdbadmin.py
+python manage.py makemigrations --settings=hacks.settings.mysql
+python manage.py migrate --settings=hacks.settings.mysql
+python manage.py shell --settings=hacks.settings.mysql < initdbadmin.py
 #echo "from django.contrib.auth.models import User; User.objects.create_superuser(username='xxxxx',password='yyyyy',email='chughts@uk.ibm.com')" | python manage.py shell --settings=hacks.settings.bluemix
 
 
 echo [$0] Starting Django Server...
-python manage.py runserver 0.0.0.0:$SERVER_PORT --noreload --settings=hacks.settings.bluemix
+python manage.py runserver 0.0.0.0:$SERVER_PORT --noreload --settings=hacks.settings.mysql
