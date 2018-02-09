@@ -18,6 +18,8 @@ from django import forms
 from django.http import HttpResponse
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.utils import Error
 
 from films.models import Genres, Films, Survey, Personality
 
@@ -44,6 +46,15 @@ class SurveyThanksCreateView(generic.CreateView):
   model = Survey
   form_class = SurveyForm
 
+class FormSurveyAPI(forms.Form):
+  film = forms.CharField(required=True)
+  genre = forms.CharField(required=True)
+  age = forms.IntegerField(required=True)
+  children = forms.IntegerField(required=True)
+  gender = forms.CharField(required=True)
+  health = forms.CharField(required=True)
+  education = forms.CharField(required=True)
+  drug = forms.CharField(required=True)
 
 class FormAPI(forms.Form):
   openness = forms.DecimalField(required=False)
@@ -93,6 +104,40 @@ def prepareQuery(queryData):
   reply = {"data": data}
   return reply
 
+def postSurvey(queryData):
+  try:
+    film = Films.objects.get(title=queryData['film'])
+  except ObjectDoesNotExist:
+    reply = {'error' : 'Film {} not found'.format(queryData['film'])}
+    film = None
+  try:
+    genre = Genres.objects.get(genre=queryData['genre'])
+  except ObjectDoesNotExist:
+    reply = {'error' : 'Genre {} not found'.format(queryData['genre'])}
+    genre = None
+
+  if film is not None and genre is not None:
+    try:
+      survey = Survey.objects.create(film=film, genre=genre,
+                            age=queryData['age'],
+                            children=queryData['children'],
+                            gender=queryData['gender'],
+                            health=queryData['health'],
+                            education=queryData['education'],
+                            drug=queryData['drug'])
+      survey.save()
+      reply = {'data':
+        {
+          'film' : film.title,
+          'genre' : genre.genre,
+          'message' : 'Survey successfully posted'
+        }
+       }
+    except Error:
+      reply = {'error' : 'Database Error whilst submitting form'}
+
+  return reply
+
 
 @csrf_exempt
 def filmfor(request):
@@ -123,6 +168,37 @@ def filmfor(request):
       validRequest = True
     else:
       logger.info("The form is not valid")
+
+  results["results"] = theData
+  return HttpResponse(json.dumps(results), content_type="application/json")
+
+@csrf_exempt
+def surveypost(request):
+  results = {}
+  theData = {"error":"If you see this message then something has gone badly wrong"}
+
+  validRequest = False
+  logger.info("Checking request method")
+  if request.method == "GET":
+    logger.info("Request is a GET")
+    theData = {"error":"Only POST is supported for this API"}
+    validRequest = False
+
+  if request.method == "POST":
+    logger.info("Request is a POST")
+    queryFor = {}
+    form = FormSurveyAPI(request.POST)
+    if form.is_valid():
+      for d in ['film', 'genre', 'age',
+        'children', 'gender', 'health', 'education',
+        'drug']:
+        v = form.cleaned_data[d]
+        queryFor[d] = v
+      theData = postSurvey(queryFor)
+      validRequest = True
+    else:
+      logger.info("The form is not valid")
+      theData = {"error":form.errors}
 
   results["results"] = theData
   return HttpResponse(json.dumps(results), content_type="application/json")

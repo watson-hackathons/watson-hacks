@@ -16,10 +16,9 @@
 from django.conf.urls import url, include
 from django.views.generic.edit import CreateView
 from .views import films
-from .views.films import SurveyCreateView, SurveyThanksCreateView, filmfor
-
+from .views.films import SurveyCreateView, SurveyThanksCreateView
+from .views.films import filmfor, surveypost
 from .models import Survey
-
 
 urlpatterns = [
 #    url(r'^teams$', ideas.teamlist, name='teamlist'),
@@ -28,4 +27,5 @@ urlpatterns = [
     url (r'^survey$', SurveyThanksCreateView.as_view(success_url = 'survey'), \
                                name="thanks"),
     url(r'^filmfor$', filmfor, name='apifilmfor'),
+    url(r'^surveypost$', surveypost, name='apisurvey'),
 ]
